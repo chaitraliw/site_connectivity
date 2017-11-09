@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include site_connectivity *.css
+recursive-include site_connectivity *.csv
+recursive-include site_connectivity *.html
+recursive-include site_connectivity *.ico
+recursive-include site_connectivity *.js
+recursive-include site_connectivity *.json
+recursive-include site_connectivity *.md
+recursive-include site_connectivity *.png
+recursive-include site_connectivity *.py
+recursive-include site_connectivity *.svg
+recursive-include site_connectivity *.txt
+recursive-exclude site_connectivity *.pyc
