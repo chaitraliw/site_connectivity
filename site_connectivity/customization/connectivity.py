@@ -43,7 +43,7 @@ def process_data(data):
 	has_session_count = []
 
 	for site,value in data.items():
-		registered_user = frappe.get_doc("Site Configurations",site.split(".")[0])
+		registered_user = frappe.get_doc("Site Configurations",site.split(".")[0].upper())
 		if value != "Incomplete Setup":
 			user_list = [{"first_name":user.get('first_name'),"name":user.get('name'),"last_login":user.get('last_login'),"has_session":user.get('has_session')} 
 				if user.get('name')==registered_user.email_address else None for user in value.get('message').get('active_users')]
@@ -53,7 +53,7 @@ def process_data(data):
 					i.update({"cust_count":value.get('message').get('customer')})
 				final_dict.update({site:api_user})
 	for site,value in final_dict.items():
-		registered_user = frappe.get_doc("Site Configurations",site.split(".")[0])
+		registered_user = frappe.get_doc("Site Configurations",site.split(".")[0].upper())
 		registered_user.last_signup = value[0].get('last_login')
 		registered_user.customer_count = value[0].get('cust_count')
 		registered_user.api_user_email = value[0].get('name')
@@ -77,6 +77,10 @@ def process_singleton_site():
 			site_data.update({"active_users" : active_users,"customer":customer[0].get('cust_count')})
 	except Exception, e:
 		site_data.update({"resp":"error"})
+		error_log = frappe.new_doc("Error Log")
+		error_log.method = "Api Dashboard"
+		error_log.error = e
+		error_log.save()
 	return site_data	
 
 
